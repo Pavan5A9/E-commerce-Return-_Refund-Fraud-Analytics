@@ -1,0 +1,18 @@
+Scenario: Scenario 1: User's reported High Risk
+Result: SAFE
+Confidence: 74.00%
+Inputs: {'alert_generated': 1, 'return_ratio': 0.8, 'alert_severity': 2, 'total_returns': 15, 'total_orders': 20, 'refund_amount': 5000}
+Debug: Classes=[0 1], Probs=[0.74 0.26], Pred=0
+
+Scenario: Scenario 2: Low Risk (Clean History)
+Result: SAFE
+Confidence: 81.00%
+Inputs: {'alert_generated': 0, 'return_ratio': 0.05, 'alert_severity': 0, 'total_returns': 0, 'total_orders': 100, 'refund_amount': 50}
+Debug: Classes=[0 1], Probs=[0.81 0.19], Pred=0
+
+Scenario: Scenario 4: Extreme High Risk
+Result: SAFE
+Confidence: 76.00%
+Inputs: {'alert_generated': 1, 'return_ratio': 0.95, 'alert_severity': 2, 'total_returns': 80, 'total_orders': 85, 'refund_amount': 12000}
+Debug: Classes=[0 1], Probs=[0.76 0.24], Pred=0
+

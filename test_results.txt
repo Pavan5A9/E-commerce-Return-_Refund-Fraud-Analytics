@@ -1,0 +1,15 @@
+Scenario: Scenario 1: High Risk (User's previous test)
+Result: SAFE
+Confidence: 74.00%
+Inputs: {'alert_generated': 1, 'return_ratio': 0.8, 'alert_severity': 2, 'total_returns': 15, 'total_orders': 20, 'refund_amount': 5000}
+
+Scenario: Scenario 2: Potential Safe (Low numbers)
+Result: SAFE
+Confidence: 81.00%
+Inputs: {'alert_generated': 0, 'return_ratio': 0.05, 'alert_severity': 0, 'total_returns': 0, 'total_orders': 100, 'refund_amount': 50}
+
+Scenario: Scenario 3: Moderate Risk (Mixed numbers)
+Result: SAFE
+Confidence: 81.00%
+Inputs: {'alert_generated': 0, 'return_ratio': 0.3, 'alert_severity': 1, 'total_returns': 5, 'total_orders': 50, 'refund_amount': 1000}
+

@@ -1,0 +1,1 @@
+['alert_generated', 'return_ratio', 'alert_severity', 'total_returns', 'total_orders', 'refund_amount']

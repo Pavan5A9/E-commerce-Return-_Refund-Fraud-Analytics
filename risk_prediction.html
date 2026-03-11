@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row pt-4">
+    <!-- Left Column: Input Form -->
+    <div class="col-md-7 mb-4">
+        <div class="glass-card anim-slide-up">
+            <div class="d-flex align-items-center mb-4">
+                <div class="feature-icon bg-primary-subtle text-primary rounded-circle p-3 me-3" 
+                     style="width: 50px; height: 50px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;">
+                    <i class="ri-ai-generate-2"></i>
+                </div>
+                <div>
+                    <h4 class="mb-0">Risk Assessment</h4>
+                    <p class="text-secondary small mb-0">Input transaction parameters for AI analysis</p>
+                </div>
+            </div>
+
+            <form id="predictionForm" method="POST" action="/risk-prediction" class="row g-3">
+                {% for feature in features %}
+                <div class="col-md-6">
+                    <label for="{{ feature }}" class="form-label text-capitalize small fw-bold text-secondary">
+                        {{ feature.replace('_', ' ') }}
+                    </label>
+                    
+                    {% if feature == 'alert_generated' %}
+                    <select name="{{ feature }}" id="{{ feature }}" class="form-select" required>
+                        <option value="" selected disabled>Select...</option>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                    {% elif feature == 'alert_severity' %}
+                    <select name="{{ feature }}" id="{{ feature }}" class="form-select" required>
+                        <option value="" selected disabled>Select...</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    {% else %}
+                    <input type="number" step="any" name="{{ feature }}" id="{{ feature }}" 
+                           class="form-control" placeholder="0.00" required>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="col-12 mt-3 d-flex gap-2">
+                    <button type="button" class="btn btn-outline-success btn-sm flex-grow-1" onclick="loadExample('safe')">
+                        <i class="ri-shield-check-line me-1"></i> Safe Example
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm flex-grow-1" onclick="loadExample('fraud')">
+                        <i class="ri-alarm-warning-line me-1"></i> Fraud Example
+                    </button>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center gap-2">
+                        <i class="ri-radar-line"></i>
+                        Analyze Transaction
+                    </button>
+                </div>
+            </form>
+
+            {% if error %}
+            <div class="alert alert-danger mt-3 mb-0 d-flex align-items-center" role="alert">
+                <i class="ri-error-warning-line me-2"></i>
+                <div>{{ error }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Right Column: Result / Info -->
+    <div class="col-md-5 mb-4">
+        {% if prediction is not none %}
+        <div class="glass-card h-100 d-flex flex-column justify-content-center text-center anim-pop-in">
+            <h5 class="text-secondary mb-3 text-uppercase small letter-spacing-1">Analysis Result</h5>
+
+            {% if "FRAUD DETECTED" in prediction %}
+            <div class="display-1 mb-3 anim-float">⚠️</div>
+            <h2 class="text-danger fw-bold mb-2">High Risk Detected</h2>
+            <p class="text-secondary">
+                This transaction shows patterns consistent with fraudulent activity based on the 6-feature biometric model.
+            </p>
+            <div class="badge bg-danger-subtle text-danger p-2 px-3 rounded-pill mt-2">
+                ACTION REQUIRED
+            </div>
+            {% else %}
+            <div class="display-1 mb-3 anim-float">✅</div>
+            <h2 class="text-success fw-bold mb-2">Safe Transaction</h2>
+            <p class="text-secondary">
+                This transaction appears legitimate and meets our safety thresholds.
+            </p>
+            <div class="badge bg-success-subtle text-success p-2 px-3 rounded-pill mt-2">
+                VERIFIED SAFE
+            </div>
+            {% endif %}
+
+            {% if confidence %}
+            <div class="mt-5 p-4 rounded-4 border bg-light shadow-sm">
+                <small class="text-secondary text-uppercase fw-bold" style="font-size: 0.7rem;">Confidence Score</small>
+                <div class="display-5 fw-bold text-dark mt-1">{{ confidence }}</div>
+                <div class="progress mt-3" style="height: 6px; border-radius: 10px; background: #eee;">
+                    {% set conf_val = confidence.replace('%', '')|float %}
+                    <div class="progress-bar {% if 'FRAUD DETECTED' in prediction %}bg-danger{% else %}bg-success{% endif %}" 
+                         role="progressbar" style="width: {{ conf_val }}%" 
+                         aria-valuenow="{{ conf_val }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        {% else %}
+        <div class="glass-card h-100 d-flex flex-column justify-content-center text-center p-5">
+            <div class="text-secondary opacity-25 display-1 mb-4 anim-float">🤖</div>
+            <h4 class="mb-2">Awaiting Intelligence</h4>
+            <p class="text-secondary">
+                Our Random Forest model is ready to process the transaction data and provide a real-time risk score.
+            </p>
+            <div class="mt-4 p-3 rounded border border-dashed text-secondary small">
+                <i class="ri-information-line me-1"></i> Use numeric values for all features.
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function loadExample(type) {
+    const examples = {
+        'safe': {
+            'alert_generated': 'No',
+            'return_ratio': 0.05,
+            'alert_severity': 'Low',
+            'total_returns': 0,
+            'total_orders': 100,
+            'refund_amount': 50
+        },
+        'fraud': {
+            'alert_generated': 'Yes',
+            'return_ratio': 0.1,
+            'alert_severity': 'High',
+            'total_returns': 10,
+            'total_orders': 15,
+            'refund_amount': 5000
+        }
+    };
+    
+    const data = examples[type];
+    for (const key in data) {
+        const input = document.getElementById(key);
+        if (input) {
+            input.value = data[key];
+        }
+    }
+}
+</script>
+{% endblock %}

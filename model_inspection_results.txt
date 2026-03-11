@@ -1,0 +1,39 @@
+Model Classes: [0 1]
+Top Features: ['alert_generated', 'return_ratio', 'alert_severity', 'total_returns', 'total_orders', 'refund_amount']
+Encoder for product_category classes: ['Beauty' 'Books' 'Electronics' 'Fashion' 'Home' 'Sports']
+Encoder for payment_method classes: ['COD' 'Credit Card' 'Debit Card' 'UPI' 'Wallet']
+Encoder for device_type classes: ['Desktop' 'Mobile' 'Tablet']
+Encoder for return_requested classes: ['No' 'Yes']
+Encoder for return_reason classes: ['Damaged' 'Fake item' 'No longer needed' 'Not as described' 'Wrong item']
+Encoder for item_condition_returned classes: ['Damaged' 'New' 'Used']
+Encoder for refund_method classes: ['Gift Card' 'Original Payment' 'Wallet']
+Encoder for delivery_status classes: ['Delivered' 'Not Delivered']
+Encoder for location_mismatch classes: ['No' 'Yes']
+Encoder for multiple_accounts_flag classes: ['No' 'Yes']
+Encoder for alert_generated classes: ['No' 'Yes']
+Encoder for alert_severity classes: ['High' 'Low' 'Medium']
+
+Raw Input DF Types:
+alert_generated      int64
+return_ratio       float64
+alert_severity       int64
+total_returns        int64
+total_orders         int64
+refund_amount        int64
+dtype: object
+
+--- TEST: WITHOUT ENCODING ---
+Pred: 1, Probs: [0.05 0.95]
+VAL 1 NOT IN alert_generated CLASSES!
+VAL 2 NOT IN alert_severity CLASSES!
+
+--- TEST: WITH ENCODING ---
+Pred: 1, Probs: [0.05 0.95]
+Encoded Input DF Values:
+alert_generated       1.0
+return_ratio          0.1
+alert_severity        2.0
+total_returns        10.0
+total_orders         15.0
+refund_amount      5000.0
+Name: 0, dtype: float64

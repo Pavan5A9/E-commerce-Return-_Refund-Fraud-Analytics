@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopy Buddy - Advanced AI Detection</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom Premium CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=3">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- RemixIcon -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <span style="font-size: 1.8rem;">🛡️</span>
+        <span>Shopy <span class="text-gradient">Buddy</span></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="navbar-item"><a
+              class="nav-link {{ 'active' if request.path == '/' or request.path == '/home' else '' }}"
+              href="/">Home</a></li>
+          <li class="navbar-item"><a class="nav-link {{ 'active' if request.path == '/dashboard' else '' }}"
+              href="/dashboard">Dashboard</a></li>
+          <li class="navbar-item"><a class="nav-link {{ 'active' if request.path == '/about' else '' }}"
+              href="/about">About</a></li>
+          <li class="navbar-item"><a class="nav-link {{ 'active' if request.path == '/risk-prediction' else '' }}"
+              href="/risk-prediction">Predict Risk</a></li>
+          <li class="navbar-item"><a class="nav-link {{ 'active' if request.path == '/return-ratio' else '' }}"
+              href="/return-ratio">Return Insights</a></li>
+          <li class="navbar-item"><a class="nav-link {{ 'active' if request.path == '/batch-prediction' else '' }}"
+              href="/batch-prediction">Batch Prediction</a></li>
+          <li class="navbar-item position-relative">
+            <a class="nav-link text-primary" href="#" onclick="playClickSound()">
+              <i class="ri-login-box-line fs-5"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    {% block content %}{% endblock %}
+  </div>
+
+  <footer>
+    <div class="container text-center">
+      <p class="mb-0">© 2026 Ecommerce Fraud Detection System. Powered by AI.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script>
+    function playClickSound() {
+      // Audio Logic
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(600, audioCtx.currentTime); // Frequency in Hz
+      gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); // Volume
+      gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.15);
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.15);
+
+      // Animation Logic
+      const clickedElement = document.querySelector('.navbar-item a[onclick="playClickSound()"] i');
+      if (clickedElement) {
+        clickedElement.classList.add('animate-pulse');
+        setTimeout(() => {
+          clickedElement.classList.remove('animate-pulse');
+        }, 300); // Remove after 300ms
+      }
+    }
+  </script>
+</body>
+
+</html>

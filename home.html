@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="container">
+    <div class="row align-items-center min-vh-100 py-5">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="fade-in">
+                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3">
+                    <i class="ri-shield-check-line me-1"></i> AI-Powered Fraud Detection
+                </span>
+                <h1 class="display-3 fw-bold mb-4" style="line-height: 1.2;">
+                    Protect Your <span class="text-gradient">E-commerce</span> Business
+                </h1>
+                <p class="lead text-secondary mb-4">
+                    Advanced machine learning algorithms to detect and prevent return fraud in real-time.
+                    Safeguard your revenue with 97%+ accuracy.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="/dashboard" class="btn btn-primary btn-lg px-4">
+                        <i class="ri-dashboard-line me-2"></i> View Dashboard
+                    </a>
+                    <a href="/risk-prediction" class="btn btn-outline-secondary btn-lg px-4">
+                        <i class="ri-radar-line me-2"></i> Predict Risk
+                    </a>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="row mt-5 g-4">
+                    <div class="col-4">
+                        <h3 class="fw-bold text-primary mb-0">97.2%</h3>
+                        <p class="text-secondary small mb-0">Accuracy</p>
+                    </div>
+                    <div class="col-4">
+                        <h3 class="fw-bold text-primary mb-0">100K+</h3>
+                        <p class="text-secondary small mb-0">Transactions</p>
+                    </div>
+                    <div class="col-4">
+                        <h3 class="fw-bold text-primary mb-0">Real-time</h3>
+                        <p class="text-secondary small mb-0">Detection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="position-relative">
+                <!-- Decorative Background -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-10 rounded-4"
+                    style="transform: rotate(-3deg);"></div>
+
+                <!-- Main Card -->
+                <div class="glass-card p-4 position-relative">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">Live Detection</h5>
+                        <span class="badge bg-success">
+                            <i class="ri-checkbox-circle-line me-1"></i> Active
+                        </span>
+                    </div>
+
+                    <!-- Sample Transaction Cards -->
+                    <div class="mb-3 p-3 bg-white rounded-3 border border-success border-opacity-25">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <p class="fw-bold mb-1 text-dark">Order #ORD-45231</p>
+                                <p class="text-secondary small mb-0">Electronics • $1,299</p>
+                            </div>
+                            <span class="badge bg-success-subtle text-success">
+                                <i class="ri-check-line"></i> Safe
+                            </span>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-success" style="width: 95%"></div>
+                        </div>
+                        <p class="text-success small mb-0 mt-1">95% Confidence</p>
+                    </div>
+
+                    <div class="mb-3 p-3 bg-white rounded-3 border border-danger border-opacity-25">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <p class="fw-bold mb-1 text-dark">Order #ORD-45232</p>
+                                <p class="text-secondary small mb-0">Fashion • $899</p>
+                            </div>
+                            <span class="badge bg-danger-subtle text-danger">
+                                <i class="ri-alert-fill"></i> Fraud
+                            </span>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-danger" style="width: 87%"></div>
+                        </div>
+                        <p class="text-danger small mb-0 mt-1">87% Confidence</p>
+                    </div>
+
+                    <div class="p-3 bg-white rounded-3 border">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <p class="fw-bold mb-1 text-dark">Order #ORD-45233</p>
+                                <p class="text-secondary small mb-0">Home & Garden • $459</p>
+                            </div>
+                            <span class="badge bg-success-subtle text-success">
+                                <i class="ri-check-line"></i> Safe
+                            </span>
+                        </div>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-success" style="width: 92%"></div>
+                        </div>
+                        <p class="text-success small mb-0 mt-1">92% Confidence</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="bg-light py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">Powerful Features</h2>
+            <p class="text-secondary lead">Everything you need to combat e-commerce fraud</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card h-100 text-center p-4 bg-white">
+                    <div class="feature-icon bg-primary-subtle text-primary mx-auto mb-3">
+                        <i class="ri-brain-line"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">ML Detection</h5>
+                    <p class="text-secondary small mb-0">Random Forest algorithm trained on 100K+ transactions</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card h-100 text-center p-4 bg-white">
+                    <div class="feature-icon bg-success-subtle text-success mx-auto mb-3">
+                        <i class="ri-time-line"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Real-time Analysis</h5>
+                    <p class="text-secondary small mb-0">Instant fraud risk assessment for every transaction</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card h-100 text-center p-4 bg-white">
+                    <div class="feature-icon bg-warning-subtle text-warning mx-auto mb-3">
+                        <i class="ri-bar-chart-box-line"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Analytics Dashboard</h5>
+                    <p class="text-secondary small mb-0">Comprehensive insights into fraud patterns and trends</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card h-100 text-center p-4 bg-white">
+                    <div class="feature-icon bg-danger-subtle text-danger mx-auto mb-3">
+                        <i class="ri-shield-keyhole-line"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Smart Alerts</h5>
+                    <p class="text-secondary small mb-0">Automated alerts for high-risk transactions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="container py-5 my-5">
+    <div class="glass-card p-5 text-center bg-primary text-white position-relative overflow-hidden"
+        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="position-relative z-1">
+            <h2 class="fw-bold mb-3">Ready to Protect Your Business?</h2>
+            <p class="lead mb-4 opacity-75">Start detecting fraud with AI-powered precision today</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="/risk-prediction" class="btn btn-light btn-lg px-4">
+                    <i class="ri-radar-line me-2"></i> Try Prediction
+                </a>
+                <a href="/about" class="btn btn-outline-light btn-lg px-4">
+                    <i class="ri-information-line me-2"></i> Learn More
+                </a>
+            </div>
+        </div>
+        <!-- Decorative Elements -->
+        <div class="position-absolute top-0 end-0 opacity-10">
+            <i class="ri-shield-check-line" style="font-size: 200px;"></i>
+        </div>
+    </div>
+</div>
+
+<style>
+    .min-vh-100 {
+        min-height: 100vh;
+    }
+
+    .text-gradient {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>
+{% endblock %}

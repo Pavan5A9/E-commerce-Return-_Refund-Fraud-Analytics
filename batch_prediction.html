@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid px-lg-5 fade-in">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
+        <div>
+            <h6 class="text-secondary text-uppercase small fw-bold mb-1">Tools</h6>
+            <h2 class="fw-bold mb-0 text-dark">Batch Prediction</h2>
+        </div>
+        <div>
+            <a href="/static/sample_batch.csv"
+                class="btn btn-outline-primary d-flex align-items-center gap-2 shadow-sm bg-white" download>
+                <i class="ri-download-line"></i> Download Template
+            </a>
+        </div>
+    </div>
+
+    <!-- Upload Card -->
+    <div class="row mb-5">
+        <div class="col-md-6 mx-auto">
+            <div class="glass-card text-center p-5">
+                <div class="mb-4 text-primary bg-primary bg-opacity-10 d-inline-block p-3 rounded-circle">
+                    <i class="ri-file-upload-line display-4"></i>
+                </div>
+                <h3 class="fw-bold mb-3">Upload Transaction CSV</h3>
+                <p class="text-secondary mb-4">Upload a CSV file containing transaction details to process bulk fraud
+                    predictions.</p>
+
+                <form method="POST" enctype="multipart/form-data" class="d-flex flex-column align-items-center gap-3">
+                    <input type="file" name="file" class="form-control w-75" accept=".csv" required>
+                    <button type="submit" class="btn btn-primary px-5 py-2 shadow-sm fw-bold">
+                        <i class="ri-magic-line me-2"></i> Analyze File
+                    </button>
+                    {% if error %}
+                    <div class="alert alert-danger mt-3 w-75">{{ error }}</div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    {% if predictions %}
+    <div class="glass-card mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0 text-dark">Prediction Results</h5>
+            <span class="badge bg-primary bg-opacity-10 text-primary">{{ predictions|length }} Transactions
+                Processed</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Data Snapshot</th>
+                        <th scope="col">Prediction</th>
+                        <th scope="col">Confidence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in predictions %}
+                    <tr>
+                        <td class="font-monospace text-secondary fw-bold">#{{ item.id }}</td>
+                        <td class="small text-secondary">
+                            {% for k, v in item.data.items() %}
+                            {% if loop.index <= 3 %} <strong>{{ k }}:</strong> {{ v }}<br>
+                                {% endif %}
+                                {% endfor %}
+                                {% if item.data|length > 3 %}...{% endif %}
+                        </td>
+                        <td>
+                            {% if item.is_fraud %}
+                            <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill">
+                                <i class="ri-error-warning-fill me-1"></i> FRAUD
+                            </span>
+                            {% else %}
+                            <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">
+                                <i class="ri-checkbox-circle-fill me-1"></i> SAFE
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="fw-bold text-dark">{{ item.confidence }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

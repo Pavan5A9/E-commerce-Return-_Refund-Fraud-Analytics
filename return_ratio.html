@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+        <h2 class="fw-bold mb-0">Return Insights</h2>
+        <p class="text-secondary mb-0">Analyze return patterns and fraud indicators</p>
+    </div>
+    <div class="col-md-4">
+        <div class="input-group">
+            <span class="input-group-text bg-white"><i class="ri-search-line"></i></span>
+            <input type="text" class="form-control border-start-0 ps-0" placeholder="Search orders, customers...">
+            <button class="btn btn-white border ms-2 rounded-2"><i class="ri-notification-3-line"></i><span
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span></button>
+            <select class="form-select ms-2" style="max-width: 150px;">
+                <option>Last 30 days</option>
+                <option>Last 3 months</option>
+                <option>Last year</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Top Stats Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="glass-card h-100 p-4">
+            <p class="text-secondary small mb-1">Avg Return Ratio (Fraud)</p>
+            <h2 class="fw-bold text-danger">{{ fraud_mean_rr }}%</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card h-100 p-4">
+            <p class="text-secondary small mb-1">Avg Return Ratio (Legit)</p>
+            <h2 class="fw-bold text-success">{{ legit_mean_rr }}%</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card h-100 p-4">
+            <p class="text-secondary small mb-1">Total Refund Amount</p>
+            <h2 class="fw-bold text-dark">₹{{ total_refund_amount }}</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card h-100 p-4">
+            <p class="text-secondary small mb-1">Fraud Refund Loss</p>
+            <h2 class="fw-bold text-warning">₹{{ fraud_refund_loss }}</h2>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row 1 -->
+<div class="row g-4 mb-4">
+    <!-- Average Return Ratio Bar Chart -->
+    <div class="col-lg-6">
+        <div class="glass-card h-100 p-4">
+            <h5 class="fw-bold mb-1">Average Return Ratio</h5>
+            <p class="text-secondary small mb-4">Comparison between fraud and legitimate orders</p>
+
+            <div style="height: 250px;">
+                <canvas id="avgReturnChart"></canvas>
+            </div>
+
+            <div class="alert alert-warning bg-warning-subtle border-0 mt-4 d-flex align-items-center">
+                <i class="ri-lightbulb-flash-line fs-5 me-2"></i>
+                <small><strong>Insight:</strong> Fraudulent orders have a <strong class="text-danger">4x higher</strong>
+                    return ratio compared to legitimate orders.</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Return Reasons Pie Chart -->
+    <div class="col-lg-6">
+        <div class="glass-card h-100 p-4">
+            <h5 class="fw-bold mb-1">Return Reasons Distribution</h5>
+            <p class="text-secondary small mb-4">Breakdown of why items are returned</p>
+
+            <div style="height: 300px; position: relative;">
+                <canvas id="returnReasonsChart"></canvas>
+            </div>
+
+            <!-- Custom Legend (Optional, if ChartJS legend isn't enough) -->
+            <div class="d-flex justify-content-center flex-wrap gap-3 mt-3">
+                {% for label in reasons_labels %}
+                <div class="d-flex align-items-center small">
+                    <span class="d-inline-block rounded-1 me-2"
+                        style="width: 10px; height: 10px; background-color: {{ reasons_colors[loop.index0] }};"></span>
+                    {{ label }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row 2 -->
+<div class="row g-4 mb-5">
+    <!-- Return Rate by Category -->
+    <div class="col-lg-6">
+        <div class="glass-card h-100 p-4">
+            <h5 class="fw-bold mb-1">Return Rate by Category</h5>
+            <p class="text-secondary small mb-4">Comparing fraud vs legitimate return rates</p>
+            <div style="height: 300px;">
+                <canvas id="categoryReturnChart"></canvas>
+            </div>
+            <div class="d-flex justify-content-center gap-4 mt-3">
+                <div class="d-flex align-items-center small">
+                    <span class="d-inline-block rounded-1 me-2"
+                        style="width: 12px; height: 12px; background-color: #cf222e;"></span>
+                    Fraud Rate
+                </div>
+                <div class="d-flex align-items-center small">
+                    <span class="d-inline-block rounded-1 me-2"
+                        style="width: 12px; height: 12px; background-color: #1a7f37;"></span>
+                    Legit Rate
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Return Trends -->
+    <div class="col-lg-6">
+        <div class="glass-card h-100 p-4">
+            <h5 class="fw-bold mb-1">Weekly Return Trends</h5>
+            <p class="text-secondary small mb-4">Returns volume and refund amounts over time</p>
+            <div style="height: 300px;">
+                <canvas id="weeklyTrendsChart"></canvas>
+            </div>
+            <div class="d-flex justify-content-center gap-4 mt-3">
+                <div class="d-flex align-items-center small">
+                    <span class="d-inline-block rounded-circle me-2"
+                        style="width: 8px; height: 8px; background-color: #0969da; border: 2px solid #0969da;"></span>
+                    Returns Count
+                </div>
+                <div class="d-flex align-items-center small">
+                    <span class="d-inline-block rounded-circle me-2"
+                        style="width: 8px; height: 8px; background-color: #9a6700; border: 2px solid #9a6700;"></span>
+                    Refund Amount
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 1. Avg Return Ratio Chart
+        new Chart(document.getElementById('avgReturnChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Legitimate', 'Fraudulent'],
+                datasets: [{
+                    data: [{{ legit_mean_rr }}, {{ fraud_mean_rr }}],
+            backgroundColor: ['#1a7f37', '#cf222e'],
+            barPercentage: 0.5,
+            borderRadius: 4
+        }]
+        },
+        options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { grid: { display: false }, max: 100 },
+            y: { grid: { display: false } }
+        }
+    }
+    });
+
+    // 2. Return Reasons Pie Chart
+    new Chart(document.getElementById('returnReasonsChart'), {
+        type: 'pie',
+        data: {
+            labels: {{ reasons_labels | tojson }},
+        datasets: [{
+            data: {{ reasons_data | tojson }},
+        backgroundColor: {{ reasons_colors | tojson }},
+        borderWidth: 0
+            }]
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false }, // Custom legend used
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        return context.label + ': ' + context.parsed + '%';
+                    }
+                }
+            }
+        }
+    }
+    });
+
+    // 3. Return Rate by Category Chart
+    new Chart(document.getElementById('categoryReturnChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ cat_labels | tojson }},
+        datasets: [
+        {
+            label: 'Fraud Rate',
+            data: {{ cat_fraud_data | tojson }},
+        backgroundColor: '#cf222e',
+        borderRadius: 4,
+        barPercentage: 0.6,
+        categoryPercentage: 0.8
+                },
+        {
+            label: 'Legit Rate',
+            data: {{ cat_legit_data | tojson }},
+        backgroundColor: '#1a7f37',
+        borderRadius: 4,
+        barPercentage: 0.6,
+        categoryPercentage: 0.8
+                }
+    ]
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { callback: function (value) { return value + '%' } },
+                grid: { color: 'rgba(0,0,0,0.05)' }
+            },
+            x: { grid: { display: false } }
+        }
+    }
+    });
+
+    // 4. Weekly Trends Line Chart
+    new Chart(document.getElementById('weeklyTrendsChart'), {
+        type: 'line',
+        data: {
+            labels: {{ weeks | tojson }},
+        datasets: [
+        {
+            label: 'Returns Count',
+            data: {{ returns_count | tojson }},
+        borderColor: '#0969da',
+        backgroundColor: '#0969da',
+        tension: 0.4,
+        yAxisID: 'y'
+                },
+        {
+            label: 'Refund Amount',
+            data: {{ refund_amount | tojson }},
+        borderColor: '#9a6700',
+        backgroundColor: '#9a6700',
+        tension: 0.4,
+        yAxisID: 'y1'
+                }
+    ]
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: false } }, // Custom legend used
+        scales: {
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                grid: { color: 'rgba(0,0,0,0.05)' }
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                grid: { display: false },
+                ticks: { callback: function (value) { return '₹' + value + 'K'; } } // Creating fake formatting
+            },
+            x: { grid: { display: false } }
+        }
+    }
+    });
+});
+</script>
+{% endblock %}
