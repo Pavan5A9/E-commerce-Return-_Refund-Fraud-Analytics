@@ -1,5 +1,11 @@
-# E-commerce Return & Refund Fraud Analytics
 
+
+# E-commerce Return & Refund Fraud Analytics
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![AI](https://img.shields.io/badge/AI-Powered-success)
+![HuggingFace](https://img.shields.io/badge/Hosted-HuggingFace-yellow)
+![Status](https://img.shields.io/badge/Status-Live-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-orange)
 ## Project Overview
 
 The **E-commerce Return & Refund Fraud Analytics System** is a machine learning-based solution designed to identify and prevent fraudulent return and refund activities in e-commerce platforms. The system analyzes customer transaction history, return behavior, refund patterns, and purchasing activities to classify return/refund requests as either legitimate or fraudulent.
